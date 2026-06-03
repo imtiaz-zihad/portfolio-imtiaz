@@ -8,6 +8,18 @@ import Image from "next/image";
 const projects = [
   {
     id: 1,
+    title: "IdeaPilot AI",
+    subtitle: "AI Startup Incubator Platform",
+    description:
+      "AI-powered platform that helps entrepreneurs validate startup ideas, generate market research, financial forecasts, branding, and investor pitch decks in under 2 minutes.",
+    image: "/ideapilot.png",
+    live: "https://idea-pilot-one.vercel.app",
+    github: "https://github.com/imtiaz-zihad/IdeaPilot",
+    tags: ["Next.js", "TypeScript", "Node.js", "Express.js", "MongoDB", "Google gemini AI"],
+    accent: "200 80% 55%",
+  },
+  {
+    id: 2,
     title: "SkillSwap",
     subtitle: "The microservice exchange platform",
     description:
@@ -19,7 +31,7 @@ const projects = [
     accent: "150 60% 50%",
   },
   {
-    id: 2,
+    id: 3,
     title: "CareSync",
     subtitle: "Healthcare Platform",
     description:
@@ -31,7 +43,7 @@ const projects = [
     accent: "185 80% 55%",
   },
   {
-    id: 3,
+    id: 4,
     title: "Volunteer Hunter",
     subtitle: "Community Platform",
     description:
@@ -41,18 +53,6 @@ const projects = [
     github: "https://github.com/imtiaz-zihad/Volunteer-Hunter",
     tags: ["React", "Node.js", "MongoDB", "Express"],
     accent: "270 60% 60%",
-  },
-  {
-    id: 4,
-    title: "Discount Pro",
-    subtitle: "Deal Aggregator",
-    description:
-      "Smart coupon and discount aggregator helping users save money with real-time deal tracking across platforms.",
-    image: "https://i.ibb.co/0X6Q0qr/discountpro.png",
-    live: "https://discount-pro-86c33.web.app/",
-    github: "https://github.com/imtiaz-zihad/Discount-Pro",
-    tags: ["React", "Firebase", "CSS3", "API"],
-    accent: "35 90% 55%",
   },
 ];
 
@@ -180,7 +180,7 @@ const Projects = () => {
                       alt={current.title}
                       width={1920}
                       height={1080}
-                      className="w-full h-auto aspect-video object-cover object-top transition-transform duration-700 group-hover:scale-105 max-h-[220px] sm:max-h-[320px] lg:max-h-[340px] xl:max-h-[400px]"
+                      className="w-full h-auto aspect-video object-cover object-top transition-transform duration-700 group-hover:scale-105 max-h-55 sm:max-h-80 lg:max-h-85 xl:max-h-100"
                     />
 
                     <div
