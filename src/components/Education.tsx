@@ -6,7 +6,7 @@ const educations = [
   {
     degree: "BSc in Software Engineering",
     institution: "Daffodil International University",
-    period: "2024 – 2028",
+    period: "2024 – 2028 (expected)",
     description: "Currently pursuing a Bachelor's degree focused on software engineering, algorithms, and web technologies.",
   },
   {

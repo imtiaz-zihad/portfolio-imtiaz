@@ -25,7 +25,7 @@ const projects = [
     description:
       "SkillSwap is a full-stack MicroSkill Exchange Platform where users can exchange skills, post problems, offer solutions, and earn coins through collaborative learning",
     image: "/skillswap.png",
-    live: "https://micro-master-connect.lovable.app",
+    live: "https://skill-swap-ten-pearl.vercel.app",
     github: "https://github.com/imtiaz-zihad/SkillSwap-Frontend",
     tags: ["Nextjs", "TypeScript", "Node.js", "Express.js", "PostgreSQL"],
     accent: "150 60% 50%",

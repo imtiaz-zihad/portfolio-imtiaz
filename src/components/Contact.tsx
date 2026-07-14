@@ -45,7 +45,7 @@ const Contact = () => {
   return (
     <section id="contact" className="py-24 relative overflow-hidden">
       {/* Dot grid background */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(0,255,230,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(0,255,230,0.04)_1px,transparent_1px)] [background-size:40px_40px] pointer-events-none" />
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(0,255,230,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(0,255,230,0.04)_1px,transparent_1px)] bg-size-[40px_40px] pointer-events-none" />
 
       <div className="container mx-auto px-4 max-w-3xl relative">
 
