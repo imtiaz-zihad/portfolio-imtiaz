@@ -15,7 +15,14 @@ const projects = [
     image: "/ideapilot.png",
     live: "https://idea-pilot-one.vercel.app",
     github: "https://github.com/imtiaz-zihad/IdeaPilot",
-    tags: ["Next.js", "TypeScript", "Node.js", "Express.js", "MongoDB", "Google gemini AI"],
+    tags: [
+      "Next.js",
+      "TypeScript",
+      "Node.js",
+      "Express.js",
+      "MongoDB",
+      "Google gemini AI",
+    ],
     accent: "200 80% 55%",
   },
   {
@@ -32,6 +39,25 @@ const projects = [
   },
   {
     id: 3,
+    title: "HireZen",
+    subtitle: "AI Job Application Tracker SaaS",
+    description:
+      "AI-powered job application tracker that scores resume-to-job match using Gemini, tracks applications through a real pipeline from saved to offer, and manages interviews and resumes in one dashboard.",
+    image: "/hirezen.png",
+    live: "https://www.hirezen.site",
+    github: "https://github.com/imtiaz-zihad/HireZen",
+    tags: [
+      "Next.js 14",
+      "TypeScript",
+      "Prisma",
+      "PostgreSQL",
+      "NextAuth v5",
+      "Gemini AI",
+    ],
+    accent: "245 75% 60%",
+  },
+  {
+    id: 4,
     title: "CareSync",
     subtitle: "Healthcare Platform",
     description:
@@ -42,18 +68,18 @@ const projects = [
     tags: ["React", "Firebase", "Tailwind", "Auth"],
     accent: "185 80% 55%",
   },
-  {
-    id: 4,
-    title: "Volunteer Hunter",
-    subtitle: "Community Platform",
-    description:
-      "Find and join volunteer opportunities in your community with real-time updates, team coordination, and impact tracking.",
-    image: "https://i.ibb.co/qMHtKnR/volunteer.png",
-    live: "https://volunteer-hunter.web.app/",
-    github: "https://github.com/imtiaz-zihad/Volunteer-Hunter",
-    tags: ["React", "Node.js", "MongoDB", "Express"],
-    accent: "270 60% 60%",
-  },
+  // {
+  //   id: 5,
+  //   title: "Volunteer Hunter",
+  //   subtitle: "Community Platform",
+  //   description:
+  //     "Find and join volunteer opportunities in your community with real-time updates, team coordination, and impact tracking.",
+  //   image: "https://i.ibb.co/qMHtKnR/volunteer.png",
+  //   live: "https://volunteer-hunter.web.app/",
+  //   github: "https://github.com/imtiaz-zihad/Volunteer-Hunter",
+  //   tags: ["React", "Node.js", "MongoDB", "Express"],
+  //   accent: "270 60% 60%",
+  // },
 ];
 
 const Projects = () => {
@@ -61,7 +87,10 @@ const Projects = () => {
   const current = projects[active];
 
   return (
-    <section id="projects" className="py-16 sm:py-20 lg:py-24 relative overflow-hidden">
+    <section
+      id="projects"
+      className="py-16 sm:py-20 lg:py-24 relative overflow-hidden"
+    >
       <div className="absolute inset-0 dot-pattern opacity-10" />
 
       <div className="container mx-auto px-4 relative z-10">
