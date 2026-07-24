@@ -11,14 +11,14 @@ import Skills from "@/components/Skill";
 export default function Home() {
   return (
     <div className="min-h-screen px-5">
-     <Navbar />
-     <Hero />
-     <About/>
-     <Skills />
-     <CP/>
-     <Projects/>
-     <Education />
-     <Contact />
+      <Navbar />
+      <Hero />
+      <About />
+      <Skills />
+      <CP />
+      <Projects />
+      <Education />
+      <Contact />
     </div>
   );
 }

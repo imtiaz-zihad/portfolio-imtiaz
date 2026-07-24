@@ -154,7 +154,8 @@ const Hero = () => {
                 }}
               >
                 <Image
-                  src="/picback.png"
+                  // src="/picback.png"
+                  src="/imtiaz.jpg"
                   alt="Imtiaz Hossen"
                   fill
                   className="object-cover"
