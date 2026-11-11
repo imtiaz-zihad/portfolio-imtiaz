@@ -5,7 +5,19 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ExternalLink, ChevronRight, Github } from "lucide-react";
 import Image from "next/image";
 
-const projects = [
+type Project = {
+  id: number;
+  title: string;
+  subtitle: string;
+  description: string;
+  image?: string; // add a screenshot in /public and set it here
+  live: string;
+  github?: string;
+  tags: string[];
+  accent: string;
+};
+
+const projects: Project[] = [
   {
     id: 1,
     title: "IdeaPilot AI",
@@ -57,34 +69,35 @@ const projects = [
     accent: "245 75% 60%",
   },
   {
-    id: 4,
-    title: "CareSync",
-    subtitle: "Healthcare Platform",
+    id: 5,
+    title: "Kickwear",
+    subtitle: "Live E-commerce Store",
     description:
-      "Connecting patients with doctors for seamless appointment scheduling, medical records, and real-time health monitoring.",
-    image: "/bpm_helthcre.jpg",
-    live: "https://medical-manager-8561e.web.app",
-    github: "https://github.com/imtiaz-zihad/CareSync-Client",
-    tags: ["React", "Firebase", "Tailwind", "Auth"],
-    accent: "185 80% 55%",
-  },
-  // {
-  //   id: 5,
-  //   title: "Volunteer Hunter",
-  //   subtitle: "Community Platform",
-  //   description:
-  //     "Find and join volunteer opportunities in your community with real-time updates, team coordination, and impact tracking.",
-  //   image: "https://i.ibb.co/qMHtKnR/volunteer.png",
-  //   live: "https://volunteer-hunter.web.app/",
-  //   github: "https://github.com/imtiaz-zihad/Volunteer-Hunter",
-  //   tags: ["React", "Node.js", "MongoDB", "Express"],
-  //   accent: "270 60% 60%",
-  // },
+      "Production e-commerce store for a Bangladeshi clothing brand, with an admin dashboard, order management, SMS order confirmations in Bangla, Cloudinary image hosting and a performance-tuned API (indexes, caching, rate limiting).",
+    // image: "/kickwear.png", // add a screenshot to /public, then uncomment
+    live: "https://kickwear.shop",
+    tags: [
+      "Next.js",
+      "Node.js",
+      "Express.js",
+      "MongoDB",
+      "Cloudinary",
+      "ISR",
+    ],
+    accent: "25 90% 55%",
+  }
+
 ];
+
+// Display order: strongest / most recent first.
+const order = [1, 3, 5, 2, 4];
+const orderedProjects = order
+  .map((id) => projects.find((p) => p.id === id))
+  .filter((p): p is Project => Boolean(p));
 
 const Projects = () => {
   const [active, setActive] = useState(0);
-  const current = projects[active];
+  const current = orderedProjects[active];
 
   return (
     <section
@@ -116,10 +129,11 @@ const Projects = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            {projects.map((p, i) => (
+            {orderedProjects.map((p, i) => (
               <button
                 key={p.id}
                 onClick={() => setActive(i)}
+                aria-pressed={active === i}
                 className={`w-full text-left p-3 sm:p-4 rounded-xl border transition-all duration-400 group ${
                   active === i
                     ? "glass-card border-primary/40 glow-border"
@@ -204,13 +218,27 @@ const Projects = () => {
 
                   {/* Image */}
                   <div className="relative overflow-hidden group">
-                    <Image
-                      src={current.image}
-                      alt={current.title}
-                      width={1920}
-                      height={1080}
-                      className="w-full h-auto aspect-video object-cover object-top transition-transform duration-700 group-hover:scale-105 max-h-55 sm:max-h-80 lg:max-h-85 xl:max-h-100"
-                    />
+                    {current.image ? (
+                      <Image
+                        src={current.image}
+                        alt={`${current.title} screenshot`}
+                        width={1920}
+                        height={1080}
+                        sizes="(max-width: 1024px) 100vw, 60vw"
+                        className="w-full h-auto aspect-video object-cover object-top transition-transform duration-700 group-hover:scale-105 max-h-55 sm:max-h-80 lg:max-h-85 xl:max-h-100"
+                      />
+                    ) : (
+                      <div
+                        className="w-full aspect-video max-h-55 sm:max-h-80 lg:max-h-85 xl:max-h-100 flex items-center justify-center"
+                        style={{
+                          background: `linear-gradient(135deg, hsl(${current.accent} / 0.25), hsl(${current.accent} / 0.05))`,
+                        }}
+                      >
+                        <span className="text-2xl sm:text-4xl font-bold gradient-text">
+                          {current.title}
+                        </span>
+                      </div>
+                    )}
 
                     <div
                       className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center"
@@ -268,14 +296,16 @@ const Projects = () => {
                       <ExternalLink size={14} /> Live Demo
                     </a>
 
-                    <a
-                      href={current.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      <Github size={14} /> Source Code
-                    </a>
+                    {current.github && (
+                      <a
+                        href={current.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
+                      >
+                        <Github size={14} /> Source Code
+                      </a>
+                    )}
                   </div>
                 </div>
               </motion.div>

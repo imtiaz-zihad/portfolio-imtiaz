@@ -2,11 +2,19 @@
 import { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { User, Briefcase, MapPin, Calendar, Download } from "lucide-react";
+import {
+  User,
+  Briefcase,
+  FlaskConical,
+  MapPin,
+  Calendar,
+  Download,
+} from "lucide-react";
 
 const tabs = [
   { id: "about", label: "About", icon: User },
   { id: "experience", label: "Experience", icon: Briefcase },
+  { id: "research", label: "Research", icon: FlaskConical },
 ];
 
 const aboutContent = {
@@ -43,8 +51,8 @@ const aboutContent = {
       type: "Freelance / Personal Projects",
       period: "2023 — Present",
       points: [
-        "Built 10+ web applications using MERN stack",
-        "Developed healthcare, volunteer & e-commerce platforms",
+        "Built 10+ full-stack projects with MERN, Next.js, TypeScript and PostgreSQL/Prisma",
+        "Launched a live e-commerce store (kickwear.shop) and built AI-powered apps with Gemini",
         "Implemented authentication, REST APIs & payment flows",
         "Optimized performance and responsive design across devices",
       ],
@@ -55,12 +63,21 @@ const aboutContent = {
       period: "2024 — Present",
       points: [
         "400+ problems solved across platforms",
-        "Codeforces max rating 1096, CodeChef 2-star (1400+)",
-        "LeetCode 56 solved with 90.67% acceptance rate",
+        "Codeforces max rating 1096, CodeChef highest rating 1436 (2-star)",
+        "LeetCode 100+ solved with 92.75% acceptance rate",
         "Strong DSA skills: Trees, Graphs, DP, Union-Find",
       ],
     },
   ],
+  research: {
+    title: "Bangla NLP & Machine Learning",
+    points: [
+      "Exploring Bangla Natural Language Processing as my main research direction",
+      "Working toward publishing peer-reviewed research papers during my undergraduate years",
+      "Interested in applying NLP to low-resource language problems and building tools around the results",
+      "Aiming for a fully-funded Master's program after my BSc",
+    ],
+  },
 };
 
 const About = () => {
@@ -100,8 +117,7 @@ const About = () => {
                   alt="Imtiaz Hossen"
                   fill
                   className="object-cover"
-                  sizes="(max-width: 768px) 20rem, 32rem"
-                  priority
+                  sizes="12rem"
                 />
                 <div className="absolute inset-0 bg-linear-to-t from-background/40 to-transparent" />
               </div>
@@ -160,12 +176,14 @@ const About = () => {
             transition={{ duration: 0.5, delay: 0.1 }}
           >
             {/* Tab buttons */}
-            <div className="flex gap-2 mb-6">
+            <div className="flex flex-wrap gap-2 mb-6" role="tablist">
               {tabs.map((tab) => {
                 const Icon = tab.icon;
                 return (
                   <button
                     key={tab.id}
+                    role="tab"
+                    aria-selected={activeTab === tab.id}
                     onClick={() => setActiveTab(tab.id)}
                     className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 ${
                       activeTab === tab.id
@@ -260,6 +278,32 @@ const About = () => {
                         </ul>
                       </div>
                     ))}
+                  </motion.div>
+                )}
+
+                {activeTab === "research" && (
+                  <motion.div
+                    key="research"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.3 }}
+                    className="space-y-4"
+                  >
+                    <h4 className="text-sm font-semibold text-foreground">
+                      {aboutContent.research.title}
+                    </h4>
+                    <ul className="space-y-1.5">
+                      {aboutContent.research.points.map((point, j) => (
+                        <li
+                          key={j}
+                          className="text-xs text-muted-foreground flex items-start gap-2"
+                        >
+                          <span className="text-primary mt-1.5 w-1 h-1 rounded-full bg-primary shrink-0" />
+                          {point}
+                        </li>
+                      ))}
+                    </ul>
                   </motion.div>
                 )}
               </AnimatePresence>

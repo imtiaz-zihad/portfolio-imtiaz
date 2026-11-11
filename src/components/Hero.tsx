@@ -1,6 +1,11 @@
 "use client";
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import {
+  motion,
+  animate,
+  useInView,
+  useReducedMotion,
+} from "framer-motion";
 import { Github, Linkedin, Twitter } from "lucide-react";
 import { SiLeetcode, SiCodeforces } from "react-icons/si";
 import Image from "next/image";
@@ -13,38 +18,51 @@ const titles = [
 ];
 
 const stats = [
-  { label: "Years Experience", value: 2 },
-  { label: "Projects Completed", value: 15 },
+  { label: "Years Building", value: 2 },
+  { label: "Projects Built", value: 10 },
   { label: "Technologies", value: 12 },
   { label: "Github Commits", value: 500 },
 ];
 
 const socials = [
-  { icon: Github, href: "https://github.com/imtiaz-zihad" },
-  { icon: Linkedin, href: "https://www.linkedin.com/in/imtiaz-hossen" },
-  { icon: Twitter, href: "https://x.com/MdImtiazHo74218" },
-  { icon: SiLeetcode, href: "https://leetcode.com/u/imtiaz-hossen" },
-  { icon: SiCodeforces, href: "https://codeforces.com/profile/imtiazzihad" },
+  { icon: Github, label: "GitHub", href: "https://github.com/imtiaz-zihad" },
+  {
+    icon: Linkedin,
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/imtiaz-hossen",
+  },
+  { icon: Twitter, label: "X (Twitter)", href: "https://x.com/MdImtiazHo74218" },
+  {
+    icon: SiLeetcode,
+    label: "LeetCode",
+    href: "https://leetcode.com/u/imtiaz-hossen",
+  },
+  {
+    icon: SiCodeforces,
+    label: "Codeforces",
+    href: "https://codeforces.com/profile/imtiazzihad",
+  },
 ];
 
+// Starts at the final value so server-rendered HTML (and crawlers) see the
+// real number, then counts up from 0 once the stat scrolls into view.
 const AnimatedCounter = ({ target }: { target: number }) => {
-  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true });
+  const reduceMotion = useReducedMotion();
+  const [count, setCount] = useState(target);
+
   useEffect(() => {
-    let start = 0;
-    const duration = 2000;
-    const increment = target / (duration / 16);
-    const timer = setInterval(() => {
-      start += increment;
-      if (start >= target) {
-        setCount(target);
-        clearInterval(timer);
-      } else {
-        setCount(Math.floor(start));
-      }
-    }, 16);
-    return () => clearInterval(timer);
-  }, [target]);
-  return <span>{count}+</span>;
+    if (!inView || reduceMotion) return;
+    const controls = animate(0, target, {
+      duration: 2,
+      ease: "easeOut",
+      onUpdate: (v) => setCount(Math.round(v)),
+    });
+    return () => controls.stop();
+  }, [inView, reduceMotion, target]);
+
+  return <span ref={ref}>{count}+</span>;
 };
 
 const Hero = () => {
@@ -53,8 +71,10 @@ const Hero = () => {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const [isPaused, setIsPaused] = useState(false);
+  const reduceMotion = useReducedMotion();
 
   useEffect(() => {
+    if (reduceMotion) return;
     const current = titles[titleIndex];
 
     if (isPaused) {
@@ -84,7 +104,7 @@ const Hero = () => {
       isDeleting ? 40 : 80,
     );
     return () => clearTimeout(timeout);
-  }, [displayed, isDeleting, titleIndex, isPaused]);
+  }, [displayed, isDeleting, titleIndex, isPaused, reduceMotion]);
 
   return (
     <section
@@ -112,20 +132,24 @@ const Hero = () => {
               <span className="gradient-text">Imtiaz Hossen</span>
             </h1>
             <div className="text-xl md:text-2xl text-primary font-mono h-8 mb-6">
-              {displayed}
-              <span className="animate-pulse text-primary">|</span>
+              {reduceMotion ? titles[0] : displayed}
+              {!reduceMotion && (
+                <span className="animate-pulse text-primary">|</span>
+              )}
             </div>
             <p className="text-muted-foreground max-w-lg mx-auto lg:mx-0 mb-8 leading-relaxed">
-              Passionate full-stack developer crafting beautiful, scalable, and
-              user-friendly web applications with modern technologies.
+              Full-stack developer building scalable, user-friendly web
+              applications with Next.js, TypeScript, Node.js and PostgreSQL,
+              including AI-powered products.
             </p>
 
             {/* Social icons */}
             <div className="flex gap-3 justify-center lg:justify-start">
-              {socials.map(({ icon: Icon, href }) => (
+              {socials.map(({ icon: Icon, label, href }) => (
                 <a
                   key={href}
                   href={href}
+                  aria-label={label}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-11 h-11 rounded-lg glass-card glow-border flex items-center justify-center text-foreground hover:text-primary hover:scale-110 transition-all duration-300"
@@ -154,12 +178,11 @@ const Hero = () => {
                 }}
               >
                 <Image
-                  // src="/picback.png"
                   src="/imtiaz.jpg"
                   alt="Imtiaz Hossen"
                   fill
                   className="object-cover"
-                  sizes="(max-width: 768px) 20rem, 32rem"
+                  sizes="(max-width: 768px) 16rem, 20rem"
                   priority
                 />
               </div>

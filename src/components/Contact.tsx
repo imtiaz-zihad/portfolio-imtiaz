@@ -1,20 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Mail, Phone, MessageCircle, Send } from "lucide-react";
+import { Mail, MessageCircle, Send } from "lucide-react";
 
 const contactInfo = [
   { icon: Mail, label: "EMAIL", value: "mdimtiazzihad@gmail.com", href: "mailto:mdimtiazzihad@gmail.com" },
-  { icon: Phone, label: "PHONE", value: "+880 1958403338", href: "tel:+8801958403338" },
   { icon: MessageCircle, label: "WHATSAPP", value: "Chat on WhatsApp", href: "https://wa.me/8801958403338" },
 ];
 
 const Contact = () => {
   const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    message: "",
+    website: "", // honeypot: must stay empty
+  });
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [toastType, setToastType] = useState<"success" | "error">("success");
+
+  useEffect(() => {
+    if (!toastMessage) return;
+    const t = setTimeout(() => setToastMessage(null), 5000);
+    return () => clearTimeout(t);
+  }, [toastMessage]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -30,16 +40,21 @@ const Contact = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-      if (!res.ok) throw new Error("Failed");
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.error || "Failed to send message.");
+      }
       setToastType("success");
       setToastMessage("Message sent! I'll get back to you soon.");
-      setForm({ name: "", email: "", message: "" });
-    } catch {
+      setForm({ name: "", email: "", message: "", website: "" });
+    } catch (err) {
       setToastType("error");
-      setToastMessage("Failed to send message.");
+      setToastMessage(
+        err instanceof Error ? err.message : "Failed to send message.",
+      );
+    } finally {
+      setLoading(false);
     }
-    setTimeout(() => setToastMessage(null), 5000);
-    setLoading(false);
   };
 
   return (
@@ -64,6 +79,7 @@ const Contact = () => {
             <span className="inline-block w-2 h-5 bg-primary ml-1 align-middle animate-pulse" />
           </h2>
           <p className="font-mono text-sm text-muted-foreground mt-2">
+            Open to internships, freelance work and research collaboration.
           </p>
         </motion.div>
 
@@ -117,9 +133,12 @@ const Contact = () => {
 
               {/* Name */}
               <div className="space-y-1.5">
-                <label className="font-mono text-[10px] text-primary tracking-widest">YOUR_NAME</label>
+                <label htmlFor="contact-name" className="font-mono text-[10px] text-primary tracking-widest">YOUR_NAME</label>
                 <input
+                  id="contact-name"
                   name="name"
+                  autoComplete="name"
+                  maxLength={100}
                   placeholder="Imtiaz"
                   value={form.name}
                   onChange={handleChange}
@@ -130,9 +149,12 @@ const Contact = () => {
 
               {/* Email */}
               <div className="space-y-1.5">
-                <label className="font-mono text-[10px] text-primary tracking-widest">YOUR_EMAIL</label>
+                <label htmlFor="contact-email" className="font-mono text-[10px] text-primary tracking-widest">YOUR_EMAIL</label>
                 <input
+                  id="contact-email"
                   name="email"
+                  autoComplete="email"
+                  maxLength={254}
                   type="email"
                   placeholder="you@domain.com"
                   value={form.email}
@@ -145,15 +167,31 @@ const Contact = () => {
 
             {/* Message */}
             <div className="space-y-1.5 mb-6">
-              <label className="font-mono text-[10px] text-primary tracking-widest">MESSAGE</label>
+              <label htmlFor="contact-message" className="font-mono text-[10px] text-primary tracking-widest">MESSAGE</label>
               <textarea
+                id="contact-message"
                 name="message"
+                minLength={10}
+                maxLength={3000}
                 placeholder="Hey, let's collab on..."
                 value={form.message}
                 onChange={handleChange}
                 required
                 rows={5}
                 className="w-full bg-muted/30 border border-primary/20 focus:border-primary/60 focus:ring-2 focus:ring-primary/20 rounded-lg px-4 py-2.5 text-sm font-mono text-foreground placeholder:text-muted-foreground/40 outline-none resize-none transition-all duration-200"
+              />
+            </div>
+
+            {/* Honeypot (hidden from users and screen readers) */}
+            <div className="hidden" aria-hidden="true">
+              <label htmlFor="contact-website">Website</label>
+              <input
+                id="contact-website"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                value={form.website}
+                onChange={handleChange}
               />
             </div>
 
@@ -176,6 +214,8 @@ const Contact = () => {
       {/* Toast */}
       {toastMessage && (
         <div
+          role="status"
+          aria-live="polite"
           className={`fixed bottom-6 right-6 z-50 px-5 py-3 rounded-lg font-mono text-sm text-white shadow-xl border ${
             toastType === "success"
               ? "bg-green-500/20 border-green-500/40 text-green-400"
