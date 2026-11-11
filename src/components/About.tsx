@@ -43,7 +43,7 @@ const aboutContent = {
       type: "Freelance / Personal Projects",
       period: "2023 — Present",
       points: [
-        "Built 15+ web applications using MERN stack",
+        "Built 10+ web applications using MERN stack",
         "Developed healthcare, volunteer & e-commerce platforms",
         "Implemented authentication, REST APIs & payment flows",
         "Optimized performance and responsive design across devices",
@@ -96,7 +96,7 @@ const About = () => {
               <div className="relative mx-auto w-48 h-48 rounded-2xl overflow-hidden border-2 border-primary/20">
 
                 <Image
-                  src="/formal.jpg"
+                  src="/imtiaz.jpg"
                   alt="Imtiaz Hossen"
                   fill
                   className="object-cover"
@@ -122,7 +122,7 @@ const About = () => {
               {/* Mini stats */}
               <div className="grid grid-cols-3 gap-3">
                 {[
-                  { value: "15+", label: "Projects" },
+                  { value: "10+", label: "Projects" },
                   { value: "400+", label: "Problems" },
                   { value: "2+", label: "Years" },
                 ].map((stat) => (
