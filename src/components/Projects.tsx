@@ -85,8 +85,19 @@ const projects: Project[] = [
       "ISR",
     ],
     accent: "25 90% 55%",
-  }
-
+  },
+  {
+    id: 4,
+    title: "CareSync",
+    subtitle: "Healthcare Platform",
+    description:
+      "Connecting patients with doctors for seamless appointment scheduling, medical records, and real-time health monitoring.",
+    image: "/bpm_helthcre.jpg",
+    live: "https://medical-manager-8561e.web.app",
+    github: "https://github.com/imtiaz-zihad/CareSync-Client",
+    tags: ["React", "Firebase", "Tailwind", "Auth"],
+    accent: "185 80% 55%",
+  },
 ];
 
 // Display order: strongest / most recent first.
@@ -224,7 +235,7 @@ const Projects = () => {
                         alt={`${current.title} screenshot`}
                         width={1920}
                         height={1080}
-                        sizes="(max-width: 1024px) 100vw, 60vw"
+                        unoptimized
                         className="w-full h-auto aspect-video object-cover object-top transition-transform duration-700 group-hover:scale-105 max-h-55 sm:max-h-80 lg:max-h-85 xl:max-h-100"
                       />
                     ) : (
